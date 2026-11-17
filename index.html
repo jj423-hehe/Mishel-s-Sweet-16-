@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Mishel's Sweet 16</title>
+<style>
+  :root {
+    --kraft-bg: #c9a679;
+    --kraft-dark: #a68254;
+    --kraft-light: #dfbe93;
+    --card-cream: #f7f1e5;
+    --ink: #2b2118;
+    --accent-pink: #e86f93;
+    --accent-plum: #2c1338;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background-color: var(--kraft-bg);
+    background-image:
+      radial-gradient(rgba(82, 56, 26, 0.14) 1px, transparent 0),
+      radial-gradient(rgba(255, 244, 224, 0.18) 1px, transparent 0),
+      linear-gradient(135deg, rgba(166, 130, 84, 0.25) 0%, rgba(223, 190, 147, 0.2) 50%, rgba(154, 118, 72, 0.3) 100%);
+    background-size: 26px 26px, 37px 37px, 100% 100%;
+    background-position: 0 0, 13px 17px, 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: hidden;
+  }
+
+  /* Breathing room above the centered card */
+  .stage {
+    width: 100%;
+    max-width: 960px;
+    padding: 44px 16px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
+
+  /* ================= CLOSED COVER VIEW ================= */
+  .cover-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.45s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .cover-wrapper.hidden {
+    display: none;
+  }
+
+  .cover-card {
+    width: min(350px, 84vw);
+    aspect-ratio: 1080 / 1540;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow:
+      0 18px 36px rgba(43, 33, 24, 0.32),
+      0 4px 10px rgba(43, 33, 24, 0.18),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+  }
+
+  .cover-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 24px 44px rgba(43, 33, 24, 0.38);
+  }
+
+  .cover-card:active {
+    transform: scale(0.985);
+  }
+
+  .cover-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .tap-hint {
+    margin-top: 16px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    color: #3d2c1d;
+    background: rgba(255, 250, 240, 0.72);
+    padding: 7px 18px;
+    border-radius: 999px;
+    box-shadow: 0 2px 8px rgba(43, 33, 24, 0.12);
+    cursor: pointer;
+    animation: pulseHint 2.2s infinite ease-in-out;
+  }
+
+  @keyframes pulseHint {
+    0%, 100% { transform: translateY(0); opacity: 0.88; }
+    50% { transform: translateY(-2px); opacity: 1; }
+  }
+
+  /* ================= OPEN TWO-PAGE SPREAD ================= */
+  .spread-wrapper {
+    width: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    animation: spreadOpen 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .spread-wrapper.open {
+    display: flex;
+  }
+
+  @keyframes spreadOpen {
+    from {
+      opacity: 0;
+      transform: scale(0.92) translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .book-spread {
+    width: min(860px, 95vw);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--card-cream);
+    border-radius: 16px;
+    box-shadow:
+      0 22px 48px rgba(43, 33, 24, 0.34),
+      0 4px 12px rgba(43, 33, 24, 0.18);
+    position: relative;
+    overflow: visible;
+  }
+
+  /* Center book hinge crease */
+  .book-spread::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 28px;
+    transform: translateX(-50%);
+    background: linear-gradient(
+      to right,
+      rgba(43, 33, 24, 0) 0%,
+      rgba(43, 33, 24, 0.08) 38%,
+      rgba(43, 33, 24, 0.22) 50%,
+      rgba(43, 33, 24, 0.08) 62%,
+      rgba(43, 33, 24, 0) 100%
+    );
+    pointer-events: none;
+    z-index: 15;
+  }
+
+  .page {
+    aspect-ratio: 1080 / 1540;
+    position: relative;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .page-left {
+    border-radius: 16px 0 0 16px;
+    background: #efe5d4;
+  }
+
+  .page-right {
+    border-radius: 0 16px 16px 0;
+    background: #f5ede0;
+  }
+
+  /* ================= LEFT PAGE: ENVELOPE & LETTER ================= */
+  .envelope-stage {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(43, 33, 24, 0.2);
+  }
+
+  .envelope-stage img.envelope-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease, filter 0.35s ease;
+  }
+
+  .envelope-stage:hover img.envelope-img {
+    transform: scale(1.015);
+  }
+
+  /* Letter popup inside the left page with clear margins around it */
+  .letter-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(34, 22, 14, 0.42);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 22px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+    z-index: 25;
+  }
+
+  .letter-overlay.lifted {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .letter-card {
+    width: 100%;
+    max-height: 100%;
+    background: #fcfaf5;
+    border-radius: 10px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.38);
+    overflow: hidden;
+    transform: translateY(28px) scale(0.92);
+    transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .letter-overlay.lifted .letter-card {
+    transform: translateY(0) scale(1);
+  }
+
+  .letter-card img {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* ================= RIGHT PAGE: CAKE & CANDLES ================= */
+  .cake-stage {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(43, 33, 24, 0.18);
+    background: #b99367;
+  }
+
+  .cake-stage img.cake-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Cut-out flame elements positioned over the 3 candles */
+  .flame {
+    position: absolute;
+    width: 11%;
+    aspect-ratio: 1 / 1.55;
+    transform-origin: 50% 88%;
+    pointer-events: none;
+    z-index: 10;
+    transition: opacity 0.35s ease, transform 0.12s ease-out, filter 0.35s ease;
+    animation: flicker 1.4s infinite alternate ease-in-out;
+  }
+
+  .flame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 0 8px rgba(255, 224, 130, 0.85));
+  }
+
+  /* Default positions tuned to the 3 candles on the cake image */
+  .flame-1 { left: 20.5%; top: 43.2%; animation-delay: 0s; }
+  .flame-2 { left: 45.2%; top: 38.8%; animation-delay: 0.25s; }
+  .flame-3 { left: 69.8%; top: 43.2%; animation-delay: 0.5s; }
+
+  @keyframes flicker {
+    0% { transform: scale(1) rotate(-2deg); }
+    50% { transform: scale(1.05, 0.96) rotate(2deg); }
+    100% { transform: scale(0.98, 1.04) rotate(-1deg); }
+  }
+
+  .flame.blowing {
+    animation: none;
+  }
+
+  .flame.out {
+    opacity: 0 !important;
+    transform: scale(0.2) translateY(-10px) !important;
+    animation: none;
+  }
+
+  /* Wish banner + confetti overlay on right page */
+  .wish-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 16%;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 20;
+  }
+
+  .wish-overlay.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .wish-banner {
+    background: rgba(255, 250, 240, 0.94);
+    border: 2px dashed #d67a96;
+    color: #3a1f32;
+    padding: 12px 20px;
+    border-radius: 14px;
+    font-size: clamp(16px, 2.3vw, 22px);
+    font-weight: 800;
+    text-align: center;
+    box-shadow: 0 10px 24px rgba(43, 33, 24, 0.26);
+    margin: 0 14px;
+  }
+
+  .relight-btn {
+    margin-top: 12px;
+    background: #3a1f32;
+    color: #fffaf0;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .relight-btn:hover {
+    background: #522c47;
+    transform: scale(1.04);
+  }
+
+  #confettiCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 18;
+  }
+
+  /* ================= MIC & CONTROLS BAR ================= */
+  .controls-bar {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: rgba(255, 250, 240, 0.82);
+    padding: 10px 18px;
+    border-radius: 999px;
+    box-shadow: 0 4px 14px rgba(43, 33, 24, 0.14);
+  }
+
+  .mic-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a3523;
+  }
+
+  .meter-track {
+    width: 72px;
+    height: 8px;
+    background: #dfd2be;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .meter-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #68b684, #f2a541, #e85d75);
+    border-radius: 999px;
+    transition: width 0.08s linear;
+  }
+
+  .blow-btn {
+    background: #e86f93;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(232, 111, 147, 0.35);
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+
+  .blow-btn:active, .blow-btn.holding {
+    transform: scale(0.95);
+    background: #d1567b;
+  }
+
+  .bottom-nav {
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .back-btn {
+    background: transparent;
+    border: 1.5px solid rgba(61, 44, 29, 0.45);
+    color: #3d2c1d;
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .back-btn:hover {
+    background: rgba(255, 250, 240, 0.6);
+  }
+
+  .https-note {
+    max-width: 560px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.45;
+    color: #4f3a27;
+    opacity: 0.88;
+    padding: 0 12px;
+  }
+
+  /* ================= ONE-CLICK PHOTO & FLAME SETUP DRAWER ================= */
+  .setup-trigger {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(43, 33, 24, 0.85);
+    color: #fffaf0;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 90;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+
+  .setup-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(28, 20, 14, 0.72);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 100;
+  }
+
+  .setup-modal.open {
+    display: flex;
+  }
+
+  .setup-box {
+    background: #fcf8f0;
+    border-radius: 16px;
+    max-width: 480px;
+    width: 100%;
+    padding: 22px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .setup-box h2 {
+    margin: 0 0 8px;
+    font-size: 18px;
+  }
+
+  .setup-box p {
+    margin: 0 0 14px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: #574332;
+  }
+
+  .file-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .file-row input {
+    font-size: 12px;
+    padding: 6px;
+    background: #efe6d6;
+    border-radius: 8px;
+  }
+
+  .setup-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .primary-action {
+    background: #2c1338;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    flex: 1;
+  }
+
+  .secondary-action {
+    background: #e3d5be;
+    color: #2b2118;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  @media (max-width: 680px) {
+    .book-spread {
+      grid-template-columns: 1fr;
+      width: min(390px, 92vw);
+    }
+    .book-spread::after {
+      display: none;
+    }
+    .page-left {
+      border-radius: 16px 16px 0 0;
+      border-bottom: 2px dashed rgba(43, 33, 24, 0.18);
+    }
+    .page-right {
+      border-radius: 0 0 16px 16px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<main class="stage">
+  <!-- CLOSED STATE: CENTERED COVER -->
+  <section class="cover-wrapper" id="coverWrapper">
+    <div class="cover-card" id="coverCard" title="Tap to open card">
+      <img id="coverImg" alt="Mishel's Sweet 16 cover">
+    </div>
+    <div class="tap-hint" id="tapToOpen">tap to open</div>
+  </section>
+
+  <!-- OPEN STATE: TWO-PAGE SPREAD -->
+  <section class="spread-wrapper" id="spreadWrapper">
+    <div class="book-spread">
+      <!-- LEFT PAGE: ENVELOPE & LETTER -->
+      <div class="page page-left">
+        <div class="envelope-stage" id="envelopeStage" title="Tap to read letter">
+          <img id="envelopeImg" class="envelope-img" alt="Envelope with letter">
+        </div>
+        <div class="letter-overlay" id="letterOverlay" title="Tap to tuck letter back">
+          <div class="letter-card" id="letterCard">
+            <img id="letterImg" alt="Birthday letter for Mishel">
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT PAGE: CAKE & CANDLES -->
+      <div class="page page-right">
+        <div class="cake-stage" id="cakeStage">
+          <img id="cakeImg" class="cake-img" alt="Birthday cake">
+          <div class="flame flame-1" id="flame1"><img id="flameImg1" alt="flame"></div>
+          <div class="flame flame-2" id="flame2"><img id="flameImg2" alt="flame"></div>
+          <div class="flame flame-3" id="flame3"><img id="flameImg3" alt="flame"></div>
+          <canvas id="confettiCanvas"></canvas>
+          <div class="wish-overlay" id="wishOverlay">
+            <div class="wish-banner">make a wish, Mishelae &lt;3</div>
+            <button class="relight-btn" id="relightBtn">relight candles</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MIC METER & FALLBACK BLOW CONTROLS -->
+    <div class="controls-bar">
+      <div class="mic-status">
+        <span id="micLabel">listening…</span>
+        <div class="meter-track">
+          <div class="meter-fill" id="meterFill"></div>
+        </div>
+      </div>
+      <button class="blow-btn" id="holdBlowBtn">hold to blow (or Space)</button>
+    </div>
+
+    <!-- BACK TO COVER & HTTPS NOTE -->
+    <div class="bottom-nav">
+      <button class="back-btn" id="backToCoverBtn">&lsaquo; back to cover</button>
+      <div class="https-note">
+        Note: blowing needs the mic, which only works when this file is hosted over https (not opened directly from your files). Use the hold-to-blow button if the mic isn't available.
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- SETUP BUTTON (Hidden automatically once exported as final card) -->
+<button class="setup-trigger" id="openSetupBtn">Load 4 Photos &amp; Export</button>
+
+<div class="setup-modal" id="setupModal">
+  <div class="setup-box">
+    <h2>Embed Your 4 Scrapbook Photos</h2>
+    <p>Select your 4 images below. The cake flames will automatically be cut out into separate floating flames and erased from the cake, then you can download your final self-contained <strong>index.html</strong> for GitHub!</p>
+    <div class="file-row">
+      <label>1. Cover Photo (Mishel's Sweet 16)</label>
+      <input type="file" id="inCover" accept="image/*">
+    </div>
+    <div class="file-row">
+      <label>2. Letter Image (Your Message)</label>
+      <input type="file" id="inLetter" accept="image/*">
+    </div>
+    <div class="file-row">
+      <label>3. Envelope Image (Closed Envelope)</label>
+      <input type="file" id="inEnvelope" accept="image/*">
+    </div>
+    <div class="file-row">
+      <label>4. Cake with Lit Candles Image</label>
+      <input type="file" id="inCake" accept="image/*">
+    </div>
+    <div class="setup-actions">
+      <button class="primary-action" id="exportHtmlBtn">Download Final index.html</button>
+      <button class="secondary-action" id="closeSetupBtn">Done</button>
+    </div>
+  </div>
+</div>
+
+<script id="cardScript">
+  // Embedded base64 assets (automatically populated when you load your 4 photos & export)
+  const EMBEDDED_ASSETS = {
+    isFinalized: false,
+    cover: "",
+    letter: "",
+    envelope: "",
+    cakeNoFlames: "",
+    flame1: "",
+    flame2: "",
+    flame3: ""
+  };
+
+  // Built-in scrapbook SVG previews so the card works out of the box before loading photos
+  function makeFallbackSVGs() {
+    const coverSvg = `data:image/svg+xml;utf8,` + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 770">
+        <defs>
+          <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+            <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#e2dcd5" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="540" height="770" fill="#fbf9f6"/>
+        <rect width="540" height="770" fill="url(#grid)"/>
+        <text x="270" y="95" font-family="Comic Sans MS, cursive, sans-serif" font-size="38" font-weight="bold" text-anchor="middle" fill="#1e1e1e" letter-spacing="10">MISHEL'S</text>
+        <polygon points="270,120 238,195 302,195" fill="#e05a6d"/>
+        <rect x="170" y="210" width="200" height="280" rx="18" fill="#d9e8f5" stroke="#ffffff" stroke-width="8"/>
+        <text x="270" y="355" font-family="sans-serif" font-size="16" text-anchor="middle" fill="#4a6580">Cover Photo</text>
+        <text x="270" y="610" font-family="Georgia, serif" font-style="italic" font-size="76" font-weight="bold" text-anchor="middle" fill="#153e5c">sweet</text>
+        <text x="270" y="700" font-family="Impact, sans-serif" font-size="84" text-anchor="middle" fill="#153e5c">16</text>
+      </svg>
+    `);
+
+    const envelopeSvg = `data:image/svg+xml;utf8,` + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 770">
+        <rect width="540" height="770" fill="#3b6978"/>
+        <rect x="95" y="55" width="380" height="660" rx="6" fill="#f7f4ed"/>
+        <text x="120" y="130" font-family="sans-serif" font-size="22" fill="#222">Happy birthdayy</text>
+        <text x="120" y="175" font-family="sans-serif" font-size="22" fill="#222">Mishelaee !!! &lt;3</text>
+        <text x="120" y="230" font-family="sans-serif" font-size="18" fill="#444">Tap to lift letter...</text>
+        <path d="M110,45 L515,45 L515,725 L110,725 L295,490 L295,280 Z" fill="#2b1238"/>
+        <circle cx="340" cy="385" r="42" fill="#7a261d"/>
+        <rect x="315" y="705" width="215" height="58" fill="#e6dcc8" transform="rotate(-1 420 730)"/>
+        <text x="422" y="732" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#1e1812">Click to open and</text>
+        <text x="422" y="752" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#1e1812">close :)</text>
+      </svg>
+    `);
+
+    const letterSvg = `data:image/svg+xml;utf8,` + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 770">
+        <rect width="540" height="770" fill="#faf7f0"/>
+        <text x="270" y="70" font-family="sans-serif" font-size="24" font-weight="bold" text-anchor="middle" text-decoration="underline" fill="#1b1b1b">Happy birthdayy Mishelaee !!! &lt;3</text>
+        <text x="270" y="140" font-family="sans-serif" font-size="18" text-anchor="middle" fill="#2b2b2b">Hope you have the most happiest</text>
+        <text x="270" y="175" font-family="sans-serif" font-size="18" text-anchor="middle" fill="#2b2b2b">and blessed years ahead!</text>
+        <text x="270" y="380" font-family="sans-serif" font-size="15" text-anchor="middle" fill="#7a6a58">(Load your 4 photos via the button</text>
+        <text x="270" y="405" font-family="sans-serif" font-size="15" text-anchor="middle" fill="#7a6a58">in the bottom corner to embed your</text>
+        <text x="270" y="430" font-family="sans-serif" font-size="15" text-anchor="middle" fill="#7a6a58">actual letter, cover, envelope &amp; cake!)</text>
+        <text x="270" y="690" font-family="sans-serif" font-size="16" text-anchor="middle" fill="#4a3b2c">Tap anywhere to tuck back inside</text>
+      </svg>
+    `);
+
+    const cakeSvg = `data:image/svg+xml;utf8,` + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 770">
+        <rect width="540" height="770" fill="#b89268"/>
+        <text x="270" y="105" font-family="Impact, sans-serif" font-size="56" text-anchor="middle" fill="#fff" letter-spacing="6">BLOW</text>
+        <text x="340" y="185" font-family="Georgia, serif" font-size="50" text-anchor="middle" fill="#ffe066">the</text>
+        <text x="270" y="275" font-family="Impact, sans-serif" font-size="58" text-anchor="middle" fill="#ffccd5" letter-spacing="5">CANDLE</text>
+        <ellipse cx="270" cy="640" rx="220" ry="90" fill="#f29cb0"/>
+        <ellipse cx="270" cy="610" rx="185" ry="65" fill="#fff5e4"/>
+        <rect x="132" y="445" width="26" height="95" rx="8" fill="#f4729c" transform="rotate(-12 145 490)"/>
+        <rect x="257" y="410" width="26" height="95" rx="8" fill="#f4729c"/>
+        <rect x="382" y="445" width="26" height="95" rx="8" fill="#f4729c" transform="rotate(12 395 490)"/>
+      </svg>
+    `);
+
+    const flameSvg = `data:image/svg+xml;utf8,` + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 95">
+        <path d="M30,6 C46,34 54,54 48,74 C43,88 17,88 12,74 C6,54 14,34 30,6 Z" fill="#fff0a6"/>
+        <path d="M30,28 C39,45 43,58 39,70 C36,78 24,78 21,70 C17,58 21,45 30,28 Z" fill="#ffbe3b"/>
+      </svg>
+    `);
+
+    return { coverSvg, envelopeSvg, letterSvg, cakeSvg, flameSvg };
+  }
+
+  const fallbacks = makeFallbackSVGs();
+
+  function renderAssets() {
+    document.getElementById("coverImg").src = EMBEDDED_ASSETS.cover || fallbacks.coverSvg;
+    document.getElementById("envelopeImg").src = EMBEDDED_ASSETS.envelope || fallbacks.envelopeSvg;
+    document.getElementById("letterImg").src = EMBEDDED_ASSETS.letter || fallbacks.letterSvg;
+    document.getElementById("cakeImg").src = EMBEDDED_ASSETS.cakeNoFlames || fallbacks.cakeSvg;
+    document.getElementById("flameImg1").src = EMBEDDED_ASSETS.flame1 || fallbacks.flameSvg;
+    document.getElementById("flameImg2").src = EMBEDDED_ASSETS.flame2 || fallbacks.flameSvg;
+    document.getElementById("flameImg3").src = EMBEDDED_ASSETS.flame3 || fallbacks.flameSvg;
+
+    if (EMBEDDED_ASSETS.isFinalized) {
+      const btn = document.getElementById("openSetupBtn");
+      if (btn) btn.style.display = "none";
+    }
+  }
+
+  renderAssets();
+
+  // ================= CARD OPEN / CLOSE INTERACTIONS =================
+  const coverWrapper = document.getElementById("coverWrapper");
+  const spreadWrapper = document.getElementById("spreadWrapper");
+  const coverCard = document.getElementById("coverCard");
+  const tapToOpen = document.getElementById("tapToOpen");
+  const backToCoverBtn = document.getElementById("backToCoverBtn");
+
+  function openCard() {
+    coverWrapper.classList.add("hidden");
+    spreadWrapper.classList.add("open");
+    initMicrophone();
+  }
+
+  function closeCard() {
+    spreadWrapper.classList.remove("open");
+    coverWrapper.classList.remove("hidden");
+    letterOverlay.classList.remove("lifted");
+  }
+
+  coverCard.addEventListener("click", openCard);
+  tapToOpen.addEventListener("click", openCard);
+  backToCoverBtn.addEventListener("click", closeCard);
+
+  // ================= ENVELOPE & LETTER LIFT INTERACTION =================
+  const envelopeStage = document.getElementById("envelopeStage");
+  const letterOverlay = document.getElementById("letterOverlay");
+
+  envelopeStage.addEventListener("click", () => {
+    letterOverlay.classList.add("lifted");
+  });
+
+  letterOverlay.addEventListener("click", () => {
+    letterOverlay.classList.remove("lifted");
+  });
+
+  // ================= CANDLE BLOWING (WEB AUDIO API + FALLBACK) =================
+  const flames = [
+    document.getElementById("flame1"),
+    document.getElementById("flame2"),
+    document.getElementById("flame3")
+  ];
+  const meterFill = document.getElementById("meterFill");
+  const micLabel = document.getElementById("micLabel");
+  const holdBlowBtn = document.getElementById("holdBlowBtn");
+  const wishOverlay = document.getElementById("wishOverlay");
+  const relightBtn = document.getElementById("relightBtn");
+
+  let candlesOut = false;
+  let blowDurationMs = 0;
+  let lastFrameTime = performance.now();
+  let isHoldingFallback = false;
+  let micLevel = 0;
+  let micReady = false;
+
+  async function initMicrophone() {
+    if (micReady || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      if (!navigator.mediaDevices) micLabel.textContent = "mic unavailable";
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      const audioCtx = new AudioCtx();
+      const source = audioCtx.createMediaStreamSource(stream);
+      const analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 256;
+      source.connect(analyser);
+
+      const dataArray = new Uint8Array(analyser.frequencyBinCount);
+      micReady = true;
+      micLabel.textContent = "listening…";
+
+      function sampleMic() {
+        analyser.getByteFrequencyData(dataArray);
+        // Low-frequency wind energy (bins 1..18) best captures blowing into mic
+        let sum = 0;
+        const bins = 18;
+        for (let i = 1; i <= bins; i++) {
+          sum += dataArray[i];
+        }
+        const avg = sum / bins;
+        micLevel = Math.min(100, Math.round((avg / 155) * 100));
+        requestAnimationFrame(sampleMic);
+      }
+      sampleMic();
+    } catch (err) {
+      micLabel.textContent = "mic blocked — use button";
+    }
+  }
+
+  function updateBlowLoop(now) {
+    const dt = now - lastFrameTime;
+    lastFrameTime = now;
+
+    const effectivePower = isHoldingFallback ? 95 : micLevel;
+    meterFill.style.width = effectivePower + "%";
+
+    if (!candlesOut && spreadWrapper.classList.contains("open")) {
+      if (effectivePower > 48) {
+        blowDurationMs += dt;
+        const bendAngle = Math.min(48, (effectivePower - 35) * 0.85);
+        const squash = Math.max(0.68, 1 - (blowDurationMs / 900));
+        flames.forEach((f, idx) => {
+          f.classList.add("blowing");
+          const jitter = Math.sin(now * 0.04 + idx) * 5;
+          f.style.transform = `rotate(${bendAngle + jitter}deg) scaleY(${squash})`;
+        });
+
+        if (blowDurationMs >= 500) {
+          extinguishCandles();
+        }
+      } else {
+        blowDurationMs = Math.max(0, blowDurationMs - dt * 1.5);
+        flames.forEach((f) => {
+          f.classList.remove("blowing");
+          f.style.transform = "";
+        });
+      }
+    }
+
+    requestAnimationFrame(updateBlowLoop);
+  }
+  requestAnimationFrame(updateBlowLoop);
+
+  function extinguishCandles() {
+    candlesOut = true;
+    flames.forEach((f) => {
+      f.classList.remove("blowing");
+      f.classList.add("out");
+    });
+    wishOverlay.classList.add("visible");
+    launchConfetti();
+  }
+
+  function relightCandles() {
+    candlesOut = false;
+    blowDurationMs = 0;
+    flames.forEach((f) => {
+      f.classList.remove("out", "blowing");
+      f.style.transform = "";
+    });
+    wishOverlay.classList.remove("visible");
+  }
+
+  relightBtn.addEventListener("click", relightCandles);
+
+  // Hold-to-blow button & Spacebar fallback
+  holdBlowBtn.addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+    isHoldingFallback = true;
+    holdBlowBtn.classList.add("holding");
+  });
+  window.addEventListener("pointerup", () => {
+    isHoldingFallback = false;
+    holdBlowBtn.classList.remove("holding");
+  });
+  window.addEventListener("keydown", (e) => {
+    if (e.code === "Space" && spreadWrapper.classList.contains("open")) {
+      e.preventDefault();
+      isHoldingFallback = true;
+      holdBlowBtn.classList.add("holding");
+    }
+  });
+  window.addEventListener("keyup", (e) => {
+    if (e.code === "Space") {
+      isHoldingFallback = false;
+      holdBlowBtn.classList.remove("holding");
+    }
+  });
+
+  // ================= CONFETTI CELEBRATION =================
+  const confettiCanvas = document.getElementById("confettiCanvas");
+  const cCtx = confettiCanvas.getContext("2d");
+  let confettiPieces = [];
+  let confettiAnimId = null;
+
+  function launchConfetti() {
+    confettiCanvas.width = confettiCanvas.offsetWidth;
+    confettiCanvas.height = confettiCanvas.offsetHeight;
+    const colors = ["#ff6b9d", "#ffd166", "#70d6ff", "#c77dff", "#80ed99", "#ffffff"];
+    confettiPieces = Array.from({ length: 90 }, () => ({
+      x: Math.random() * confettiCanvas.width,
+      y: -20 - Math.random() * 140,
+      w: 6 + Math.random() * 6,
+      h: 4 + Math.random() * 5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vy: 1.6 + Math.random() * 2.4,
+      vx: -1.2 + Math.random() * 2.4,
+      rot: Math.random() * 360,
+      vRot: -4 + Math.random() * 8
+    }));
+
+    if (confettiAnimId) cancelAnimationFrame(confettiAnimId);
+    function stepConfetti() {
+      cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      let active = 0;
+      confettiPieces.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vRot;
+        if (p.y < confettiCanvas.height + 20) active++;
+        cCtx.save();
+        cCtx.translate(p.x, p.y);
+        cCtx.rotate((p.rot * Math.PI) / 180);
+        cCtx.fillStyle = p.color;
+        cCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        cCtx.restore();
+      });
+      if (active > 0) {
+        confettiAnimId = requestAnimationFrame(stepConfetti);
+      }
+    }
+    stepConfetti();
+  }
+
+  // ================= AUTOMATIC FLAME CUTTER & PHOTO EMBEDDER =================
+  const setupModal = document.getElementById("setupModal");
+  document.getElementById("openSetupBtn").addEventListener("click", () => setupModal.classList.add("open"));
+  document.getElementById("closeSetupBtn").addEventListener("click", () => setupModal.classList.remove("open"));
+
+  function fileToDataURL(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  document.getElementById("inCover").addEventListener("change", async (e) => {
+    if (e.target.files[0]) {
+      EMBEDDED_ASSETS.cover = await fileToDataURL(e.target.files[0]);
+      renderAssets();
+    }
+  });
+
+  document.getElementById("inLetter").addEventListener("change", async (e) => {
+    if (e.target.files[0]) {
+      EMBEDDED_ASSETS.letter = await fileToDataURL(e.target.files[0]);
+      renderAssets();
+    }
+  });
+
+  document.getElementById("inEnvelope").addEventListener("change", async (e) => {
+    if (e.target.files[0]) {
+      EMBEDDED_ASSETS.envelope = await fileToDataURL(e.target.files[0]);
+      renderAssets();
+    }
+  });
+
+  // Automatically cuts out the 3 flames into transparent PNGs and erases them from the cake
+  document.getElementById("inCake").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const dataUrl = await fileToDataURL(file);
+    const img = new Image();
+    img.onload = () => {
+      const W = img.width;
+      const H = img.height;
+      const cakeCanvas = document.createElement("canvas");
+      cakeCanvas.width = W;
+      cakeCanvas.height = H;
+      const ctx = cakeCanvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+
+      // Bounding boxes (normalized) matching the 3 flames in the collage cake photo
+      const flameBoxes = [
+        { x: 0.205, y: 0.432, w: 0.11, h: 0.12 },
+        { x: 0.452, y: 0.388, w: 0.11, h: 0.12 },
+        { x: 0.698, y: 0.432, w: 0.11, h: 0.12 }
+      ];
+
+      flameBoxes.forEach((box, i) => {
+        const bx = Math.round(box.x * W);
+        const by = Math.round(box.y * H);
+        const bw = Math.round(box.w * W);
+        const bh = Math.round(box.h * H);
+
+        const fCanvas = document.createElement("canvas");
+        fCanvas.width = bw;
+        fCanvas.height = bh;
+        const fCtx = fCanvas.getContext("2d");
+        const srcData = ctx.getImageData(bx, by, bw, bh);
+        const dstData = fCtx.createImageData(bw, bh);
+
+        // Sample surrounding kraft background pixel just outside flame box to patch cleanly
+        const bgSample = ctx.getImageData(Math.max(0, bx - 6), by, 1, 1).data;
+
+        for (let py = 0; py < bh; py++) {
+          for (let px = 0; px < bw; px++) {
+            const idx = (py * bw + px) * 4;
+            const r = srcData.data[idx];
+            const g = srcData.data[idx + 1];
+            const b = srcData.data[idx + 2];
+
+            // Warm bright cream/yellow flame pixels vs darker kraft background
+            const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+            const isFlame = luminance > 188 && (r - b) > 22;
+
+            if (isFlame) {
+              dstData.data[idx] = r;
+              dstData.data[idx + 1] = g;
+              dstData.data[idx + 2] = b;
+              dstData.data[idx + 3] = 255;
+
+              // Erase flame from cake image by blending sampled kraft color
+              const patch = ctx.getImageData(Math.max(0, bx - 8), by + py, 1, 1).data;
+              srcData.data[idx] = patch[0] || bgSample[0];
+              srcData.data[idx + 1] = patch[1] || bgSample[1];
+              srcData.data[idx + 2] = patch[2] || bgSample[2];
+            } else {
+              dstData.data[idx + 3] = 0;
+            }
+          }
+        }
+        fCtx.putImageData(dstData, 0, 0);
+        ctx.putImageData(srcData, bx, by);
+        EMBEDDED_ASSETS["flame" + (i + 1)] = fCanvas.toDataURL("image/png");
+      });
+
+      EMBEDDED_ASSETS.cakeNoFlames = cakeCanvas.toDataURL("image/jpeg", 0.92);
+      renderAssets();
+    };
+    img.src = dataUrl;
+  });
+
+  // Exports a single self-contained index.html with all base64 images baked inside
+  document.getElementById("exportHtmlBtn").addEventListener("click", () => {
+    const finalizedAssets = Object.assign({}, EMBEDDED_ASSETS, { isFinalized: true });
+    let fullHtml = "<!DOCTYPE html>
+" + document.documentElement.outerHTML;
+    fullHtml = fullHtml.replace(
+      /const EMBEDDED_ASSETS = \{[\s\S]*?\};/,
+      "const EMBEDDED_ASSETS = " + JSON.stringify(finalizedAssets) + ";"
+    );
+    const blob = new Blob([fullHtml], { type: "text/html" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "index.html";
+    a.click();
+  });
+</script>
+</body>
+</html>
